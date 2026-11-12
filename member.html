@@ -1,1 +1,103 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#1d4b3b"><meta name="description" content="جمعية منشأ منتوجات الزيتون بإقليم قلعة السراغنة والنواحي: تثمين المنتوج المحلي وتسويقه والتنمية المحلية"><title>فضاء المنخرط | جمعية منشأ منتوجات الزيتون</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div class="topline"><div class="container topinner"><span>المملكة المغربية · إقليم قلعة السراغنة والنواحي</span><span>التثمين · التسويق · التنمية المحلية</span></div></div><header class="site-header"><div class="container navwrap"><a class="brand" href="index.html"><img src="association-logo.png" alt="شعار الجمعية"><span><strong>جمعية منشأ منتوجات الزيتون</strong><small>بإقليم قلعة السراغنة والنواحي</small></span></a><button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button><nav id="mainNav"><a href="index.html">الرئيسية</a><a href="about.html">من نحن</a><a href="services.html">خدماتنا</a><a href="activities.html">الأنشطة</a><a href="news.html">المستجدات</a><a href="gallery.html">المعرض</a><a href="join.html">الانخراط</a><a href="member.html">فضاء المنخرط</a><a href="contact.html">اتصل بنا</a><a class="nav-admin" href="admin.html">الإدارة</a></nav></div></header><main><section class="page-hero"><div class="container"><span class="eyebrow">فضاء خاص</span><h1>صفحة المنخرط</h1><p>ولوج آمن للمنخرطين للاطلاع على معلومات العضوية والإعلانات.</p></div></section><section class="section"><div class="container member-area"><form id="memberLogin" class="login-card"><h3>تسجيل دخول المنخرط</h3><label>البريد الإلكتروني<input type="email" name="email" required></label><label>كلمة المرور<input type="password" name="password" required></label><button class="btn btn-primary full">تسجيل الدخول</button><p id="memberMessage" class="form-message"></p></form><div id="memberDashboard" class="dashboard-card hidden"></div></div></section></main><footer class="footer"><div class="container footer-main"><div class="brand brand-light"><img src="association-logo.png" alt=""><span><strong>جمعية منشأ منتوجات الزيتون</strong><small>بإقليم قلعة السراغنة والنواحي</small></span></div><p>تثمين المنتوج المحلي وتسويقه، وبناء فرص تعاون وشراكات مستدامة.</p><div class="footer-links"><a href="index.html">الرئيسية</a><a href="about.html">من نحن</a><a href="services.html">خدماتنا</a><a href="activities.html">الأنشطة</a><a href="news.html">المستجدات</a><a href="gallery.html">المعرض</a><a href="admin.html">الإدارة</a></div></div><div class="copyright">جميع الحقوق محفوظة © <span id="year"></span> جمعية منشأ منتوجات الزيتون بإقليم قلعة السراغنة والنواحي</div></footer><div id="toast" class="toast" role="status"></div><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d4b3b">
+  <meta name="description" content="فضاء المنخرط والتأطير والتكوين - جمعية منشأ منتوجات الزيتون">
+  <title>فضاء المنخرط والتكوين | جمعية منشأ منتوجات الزيتون</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="topline">
+    <div class="container topinner">
+      <span>المملكة المغربية · إقليم قلعة السراغنة والنواحي</span>
+      <span>التثمين · التسويق · التنمية المحلية</span>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container navwrap">
+      <a class="brand" href="index.html">
+        <img src="association-logo.png" alt="شعار الجمعية">
+        <span><strong>جمعية منشأ منتوجات الزيتون</strong><small>بإقليم قلعة السراغنة والنواحي</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
+      <nav id="mainNav">
+        <a href="index.html">الرئيسية</a>
+        <a href="about.html">من نحن</a>
+        <a href="services.html">خدماتنا</a>
+        <a href="activities.html">الأنشطة</a>
+        <a href="news.html">المستجدات</a>
+        <a href="gallery.html">المعرض</a>
+        <a href="join.html">الانخراط</a>
+        <a class="active" href="member.html">فضاء المنخرط</a>
+        <a href="contact.html">اتصل بنا</a>
+        <a class="nav-admin" href="admin.html">الإدارة</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">فضاء خاص بالمنخرطين</span>
+        <h1>فضاء المنخرط والتأطير والتكوين</h1>
+        <p>ولوج آمن لإدارة عضويتك، عرض منتوجاتك في المعرض، والاستفادة من الدروس والدورات التكوينية والوثائق المهنية.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container member-area-wide">
+        <!-- نموذج تعيين كلمة المرور عند الولوج من رابط التفعيل الآمن -->
+        <form id="setPasswordForm" class="login-card hidden">
+          <h3>تفعيل الحساب وتعيين كلمة المرور</h3>
+          <p class="form-hint">مرحباً بك في الجمعية. يرجى اختيار كلمة مرور جديدة وقوية لتأمين حسابك.</p>
+          <label>كلمة المرور الجديدة (8 أحرف على الأقل)<input type="password" name="new_password" minlength="8" required></label>
+          <label>تأكيد كلمة المرور<input type="password" name="confirm_password" minlength="8" required></label>
+          <button class="btn btn-primary full" type="submit">حفظ كلمة المرور والدخول</button>
+          <p id="setPassMessage" class="form-message"></p>
+        </form>
+
+        <!-- نموذج تسجيل الدخول -->
+        <form id="memberLogin" class="login-card">
+          <h3>تسجيل دخول المنخرط</h3>
+          <label>البريد الإلكتروني<input type="email" name="email" required></label>
+          <label>كلمة المرور<input type="password" name="password" required></label>
+          <button class="btn btn-primary full">تسجيل الدخول</button>
+          <p id="memberMessage" class="form-message"></p>
+          <div class="form-foot">لم تنخرط بعد؟ <a href="join.html" class="text-link">قدّم طلب الانخراط من هنا</a></div>
+        </form>
+
+        <!-- لوحة تحكم المنخرط -->
+        <div id="memberDashboard" class="dashboard-card-wide hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-main">
+      <div class="brand brand-light">
+        <img src="association-logo.png" alt="">
+        <span><strong>جمعية منشأ منتوجات الزيتون</strong><small>بإقليم قلعة السراغنة والنواحي</small></span>
+      </div>
+      <p>تثمين المنتوج المحلي وتسويقه، وبناء فرص تعاون وشراكات مستدامة.</p>
+      <div class="footer-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="about.html">من نحن</a>
+        <a href="services.html">خدماتنا</a>
+        <a href="activities.html">الأنشطة</a>
+        <a href="news.html">المستجدات</a>
+        <a href="gallery.html">المعرض</a>
+        <a href="admin.html">الإدارة</a>
+      </div>
+    </div>
+    <div class="copyright">جميع الحقوق محفوظة © <span id="year"></span> جمعية منشأ منتوجات الزيتون بإقليم قلعة السراغنة والنواحي</div>
+  </footer>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
