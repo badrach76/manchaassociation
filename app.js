@@ -21,9 +21,154 @@ async function loadPublic(){if(!db)return;const [n,a]=await Promise.all([db.from
 function renderNews(items){const el=$("#newsList");if(!el)return;el.innerHTML=items.length?items.map(x=>`<article class="news-card"><div class="news-cover">❧</div><div class="news-body"><small>${dateText(x.created_at)}</small><h3>${safe(x.title)}</h3><p>${safe(x.summary||x.body||"").slice(0,260)}</p></div></article>`).join(""):'<div class="empty-state">لا توجد أخبار منشورة حالياً.</div>';}
 function renderActivities(items){const el=$("#activitiesList");if(!el)return;el.innerHTML=items.length?items.map(x=>`<article class="content-item"><div><h3>${safe(x.title)}</h3><p>${safe(x.summary||x.body||"")}</p></div><span class="date-pill">${dateText(x.event_date||x.created_at)}</span></article>`).join(""):'<div class="empty-state">سيتم نشر الأنشطة المبرمجة والمنجزة هنا بعد إضافتها من الإدارة.</div>';}
 loadPublic();
-async function login(form,role){const d=dataOf(form);if(!db){msg(role==="admin"?"#adminMessage":"#memberMessage","يلزم ربط Supabase وإعداد حساب الدخول أولاً.",true);return;}const {data,error}=await db.auth.signInWithPassword({email:d.email,password:d.password});if(error){msg(role==="admin"?"#adminMessage":"#memberMessage",error.message,true);return;}const {data:p,error:pe}=await db.from("profiles").select("role,full_name,membership_status").eq("id",data.user.id).single();if(pe){await db.auth.signOut();msg(role==="admin"?"#adminMessage":"#memberMessage","تعذر قراءة ملف الحساب. تحقق من إعداد قاعدة البيانات.",true);return;}if(role==="admin"){if(!["admin","super_admin"].includes(p.role)){await db.auth.signOut();msg("#adminMessage","هذا الحساب غير مخول لدخول الإدارة.",true);return;}$("#adminLogin")?.classList.add("hidden");$("#adminDashboard")?.classList.remove("hidden");await showAdminTab("requests");}else{$("#memberLogin")?.classList.add("hidden");const box=$("#memberDashboard");box?.classList.remove("hidden");if(box)box.innerHTML=`<h3>مرحباً ${safe(p.full_name||data.user.email)}</h3><p>البريد الإلكتروني: ${safe(data.user.email)}</p><p>حالة العضوية: ${safe(p.membership_status||"قيد المراجعة")}</p><div class="member-product-area"><h3>إضافة منتوج إلى المعرض</h3><p class="form-hint">أدخل بيانات المنتوج وأرفق صورة واضحة. لن يظهر للعموم إلا بعد مراجعة الإدارة والمصادقة عليه.</p><form id="memberProductForm" class="form-card"><label>اسم المنتوج<input name="product_name" required maxlength="120"></label><label>الصنف<select name="category" required><option value="">اختر الصنف</option><option>زيت الزيتون</option><option>زيتون المائدة</option><option>مشتقات الزيتون</option><option>منتوجات أخرى</option></select></label><label>وصف المنتوج<textarea name="description" rows="3" required maxlength="1200"></textarea></label><div class="form-row"><label>منطقة الإنتاج<input name="origin" placeholder="الجماعة أو المنطقة"></label><label>التعبئة أو الحجم<input name="packaging" placeholder="مثال: 1 لتر، 5 لترات"></label></div><label>رقم التواصل (اختياري)<input name="contact_phone" type="tel"></label><label>صورة المنتوج<input name="image" type="file" accept="image/jpeg,image/png,image/webp" required></label><p class="form-hint">JPG أو PNG أو WEBP · الحد الأقصى 5 ميغابايت.</p><button type="submit" class="btn btn-primary">إرسال للمراجعة</button><p id="productSubmitMessage" class="form-message"></p></form><h3>منتوجاتي وحالة المراجعة</h3><div id="myProducts" class="admin-records">جار تحميل منتوجاتك...</div></div><button id="memberLogout" class="btn btn-outline-dark">تسجيل الخروج</button>`;$("#memberProductForm")?.addEventListener("submit",e=>{e.preventDefault();submitMemberProduct(e.currentTarget);});
- await loadMyProducts();
- $("#memberLogout")?.addEventListener("click",async()=>{await db.auth.signOut();location.reload();});}}
+
+async function login(form, role) {
+  const d = dataOf(form);
+
+  const messageSelector =
+    role === "admin" ? "#adminMessage" : "#memberMessage";
+
+  if (!db) {
+    msg(messageSelector, "تعذر الاتصال بقاعدة البيانات.", true);
+    return;
+  }
+
+  const { data, error } = await db.auth.signInWithPassword({
+    email: d.email.trim(),
+    password: d.password
+  });
+
+  if (error) {
+    msg(messageSelector, error.message, true);
+    return;
+  }
+
+  // التحقق من صلاحية الإدارة مباشرة من Supabase
+  if (role === "admin") {
+    const { data: isAdmin, error: adminError } =
+      await db.rpc("is_admin");
+
+    if (adminError) {
+      await db.auth.signOut();
+      msg(
+        "#adminMessage",
+        "تعذر التحقق من صلاحيات الإدارة: " + adminError.message,
+        true
+      );
+      return;
+    }
+
+    if (isAdmin !== true) {
+      await db.auth.signOut();
+      msg(
+        "#adminMessage",
+        "هذا الحساب غير مخول لدخول الإدارة.",
+        true
+      );
+      return;
+    }
+
+    $("#adminLogin")?.classList.add("hidden");
+    $("#adminDashboard")?.classList.remove("hidden");
+
+    await showAdminTab("requests");
+    return;
+  }
+
+  // التحقق من بيانات المنخرطين
+  const { data: p, error: pe } = await db
+    .from("profiles")
+    .select("role,full_name,membership_status")
+    .eq("id", data.user.id)
+    .single();
+
+  if (pe) {
+    await db.auth.signOut();
+    msg(
+      "#memberMessage",
+      "تعذر قراءة ملف المنخرط. تحقق من إعداد قاعدة البيانات.",
+      true
+    );
+    return;
+  }
+
+  $("#memberLogin")?.classList.add("hidden");
+
+  const box = $("#memberDashboard");
+  box?.classList.remove("hidden");
+
+  if (box) {
+    box.innerHTML = `
+      <h3>مرحباً ${safe(p.full_name || data.user.email)}</h3>
+      <p>البريد الإلكتروني: ${safe(data.user.email)}</p>
+      <p>حالة العضوية: ${safe(p.membership_status || "قيد المراجعة")}</p>
+      <div class="member-product-area">
+        <h3>إضافة منتوج إلى المعرض</h3>
+        <p class="form-hint">
+          أرسل منتوجك للمراجعة حتى تتم المصادقة عليه ونشره.
+        </p>
+        <form id="memberProductForm" class="form-card">
+          <label>اسم المنتوج
+            <input name="product_name" required maxlength="120">
+          </label>
+          <label>الصنف
+            <select name="category" required>
+              <option value="">اختر الصنف</option>
+              ${productCategories.map(x =>
+                `<option>${safe(x)}</option>`
+              ).join("")}
+            </select>
+          </label>
+          <label>وصف المنتوج
+            <textarea name="description" rows="3" required maxlength="1200"></textarea>
+          </label>
+          <div class="form-row">
+            <label>منطقة الإنتاج
+              <input name="origin">
+            </label>
+            <label>التعبئة أو الحجم
+              <input name="packaging">
+            </label>
+          </div>
+          <label>رقم التواصل
+            <input name="contact_phone" type="tel">
+          </label>
+          <label>صورة المنتوج
+            <input name="image" type="file"
+              accept="image/jpeg,image/png,image/webp" required>
+          </label>
+          <p class="form-hint">
+            JPG أو PNG أو WEBP · الحد الأقصى 5 ميغابايت.
+          </p>
+          <button type="submit" class="btn btn-primary">
+            إرسال للمراجعة
+          </button>
+          <p id="productSubmitMessage" class="form-message"></p>
+        </form>
+        <h3>منتوجاتي وحالة المراجعة</h3>
+        <div id="myProducts" class="admin-records">
+          جار تحميل منتوجاتك...
+        </div>
+      </div>
+      <button id="memberLogout" class="btn btn-outline-dark">
+        تسجيل الخروج
+      </button>
+    `;
+
+    $("#memberProductForm")?.addEventListener("submit", e => {
+      e.preventDefault();
+      submitMemberProduct(e.currentTarget);
+    });
+
+    await loadMyProducts();
+
+    $("#memberLogout")?.addEventListener("click", async () => {
+      await db.auth.signOut();
+      location.reload();
+    });
+  }
+     }
+
 $("#adminLogin")?.addEventListener("submit",e=>{e.preventDefault();login(e.currentTarget,"admin");});
 $("#memberLogin")?.addEventListener("submit",e=>{e.preventDefault();login(e.currentTarget,"member");});
 $("#logoutAdmin")?.addEventListener("click",async()=>{if(db)await db.auth.signOut();location.reload();});
