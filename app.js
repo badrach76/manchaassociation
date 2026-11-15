@@ -1,6 +1,6 @@
 // الإعدادات العامة: أضف رابط مشروع Supabase والمفتاح العام anon فقط.
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "https://tcziyvcpjscxndrkvdwn.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_G7mJ5U_SOEB0IN7qg4ra8Q_4SsVqec9";
 const ready = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("YOUR_") && !!SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("YOUR_");
 const db = ready && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
