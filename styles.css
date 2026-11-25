@@ -19,3 +19,18 @@
 
 /* إقرار الانخراط وصفحة الوثائق المرجعية */
 .join-consent-box{margin:18px 0 20px;padding:18px;border:1px solid #dce6dc;border-radius:12px;background:#f8faf6}.join-consent-check{display:flex!important;align-items:center;gap:10px;margin:0 0 12px!important;color:#214d3b;font-size:14px;font-weight:800}.join-consent-check input{width:19px;height:19px;accent-color:#214d3b;flex:none}.join-consent-text{font-size:11px;line-height:2.05;color:#526258}.join-consent-text p{margin:8px 0}.join-consent-links{margin:10px 0 0;font-size:11px;color:#718078}.join-consent-links a{color:#96732f;text-decoration:underline;font-weight:800}.legal-docs-layout{display:grid;gap:20px;max-width:940px}.legal-doc-card{display:flex;align-items:flex-start;gap:22px;padding:26px;border:1px solid #e5ebe4;border-radius:15px;background:#fff;box-shadow:0 10px 30px #183b2908}.legal-doc-icon{width:76px;height:86px;flex:none;display:grid;place-items:center;border-radius:10px;background:#f2f5ef;color:#214d3b;font-size:18px;font-weight:800;border:1px solid #dfe8dd}.legal-doc-copy{flex:1}.legal-doc-copy h2{margin:3px 0 8px;color:#214d3b;font-size:21px}.legal-doc-copy p{margin:0;color:#718078;font-size:12px;line-height:2}.legal-doc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.legal-doc-actions .btn{font-size:12px}.legal-doc-pending{background:#fafaf7}.document-status{display:inline-block;margin-top:13px;padding:5px 11px;border-radius:30px;background:#f1eee5;color:#876b35;font-size:11px;font-weight:800}.legal-note{padding:15px 18px;border-right:3px solid #c5a059;background:#f8f6ef;color:#6c766e;font-size:11px;line-height:1.9}@media(max-width:600px){.legal-doc-card{padding:18px;gap:13px}.legal-doc-icon{width:55px;height:65px;font-size:14px}.legal-doc-copy h2{font-size:17px}.legal-doc-actions .btn{width:100%;text-align:center}.join-consent-box{padding:13px}}
+
+
+/* توحيد عرض الصور دون اقتطاع محتواها في مختلف أقسام المنصة */
+.news-cover-img{display:block;width:100%;height:clamp(180px,24vw,260px);object-fit:contain;object-position:center;background:#f4f6f1}
+.activity-cover-img{object-fit:contain;object-position:center;background:#f4f6f1}
+.product-image img{object-fit:contain;object-position:center;background:#f4f6f1}
+.media-library-card>img,.media-picker-item img,.admin-product-thumb img,.media-thumb,.recognition-card img{object-fit:contain;object-position:center;background:#f4f6f1}
+.media-library-card>img,.media-library-card>video{height:160px}
+.media-picker-item img,.media-picker-item video{height:110px}
+.admin-product-thumb img{display:block}
+.news-card{min-width:0}
+.news-card .news-body{min-width:0;overflow-wrap:anywhere}
+.content-item{min-width:0}
+.content-item>div{min-width:0;flex:1}
+@media(max-width:600px){.news-cover-img{height:210px}.activity-cover-img{height:180px;width:100%}.content-item{flex-wrap:wrap}.date-pill{margin-right:auto}}
